@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+ 
+
+<ui:define name="corpo">
+
+        <title>Efetuar Devolução</title>
+        <h:form id="formCadastroDevolucao">
+            <p:tabView>
+                <p:tab title="Dados da devolução">
+                    <p:separator />
+                    <p:growl id="growl" showDetail="true" life="2000"/>
+                    <table>
+                    <h:panelGrid columns="4">
+                      <p:outputLabel for="locacao" value="Selecione: "/>
+							<p:selectOneMenu filter="true" id="locacao" size="30" value="#{locacaoBacking.codigoLocacao}">
+								<f:selectItem itemValue="" itemLabel="- Selecione o código da locação e o nome do Cliente-"/>
+								<f:selectItems value="#{locacaoBacking.listaLocacao}" var="locacao"
+									itemLabel="#{locacao.codigo} - #{locacao.clienteCodigo.nome}" itemValue="#{locacao.codigo}"/>
+							</p:selectOneMenu>
+                    </h:panelGrid>
+                    </table>
+
+                </p:tab>
+            </p:tabView>
+            
+            <h:panelGrid columns="1">
+                        <p:dataTable id="tabelaLocacao"
+                            value="#{locacaoBacking.listaLocacao}" var="locacao"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                            paginator="true" rows="5" lazy="true"
+                            emptyMessage="Nenhum Registro Encontrado!">
+
+                            <f:facet name="{Exporters}">
+
+                                <div style="float:left; padding-top: 5px;">
+
+                                    <h:commandLink id="excel">
+                                        <p:graphicImage name="/demo/images/excel.png" />
+                                        <p:dataExporter type="xls" target="tabelaFilmes"
+                                            fileName="listaLocacaos" />
+                                    </h:commandLink>
+
+                                    <h:commandLink>
+                                        <p:graphicImage name="/demo/images/xlsx.png" width="24" />
+                                        <p:dataExporter type="xlsxstream" target="tabelaFilmes"
+                                            fileName="listaLocacaos" />
+                                    </h:commandLink>
+
+                                    <h:commandLink id="pdf">
+                                        <p:graphicImage name="/demo/images/pdf.png" />
+                                        <p:dataExporter type="pdf" target="tabelaFilmes"
+                                            fileName="listaLocacaos" />
+                                    </h:commandLink>
+
+                                    <h:commandLink id="csv">
+                                        <p:graphicImage name="/demo/images/csv.png" />
+                                        <p:dataExporter type="csv" target="tabelaFilmes"
+                                            fileName="listaLocacaos" />
+                                    </h:commandLink>
+
+                                    <h:commandLink id="xml">
+                                        <p:graphicImage name="/demo/images/xml.png" />
+                                        <p:dataExporter type="xml" target="tabelaFilmes"
+                                            fileName="listaLocacaos" />
+                                    </h:commandLink>
+
+                                </div>
+
+                            </f:facet>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Código da locação" />
+                                </f:facet>
+                                <h:outputText value="#{locacao.codigo}" />
+                            </p:column>
+
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Cliente" />
+                                </f:facet>
+                                <h:outputText value="#{locacao.clienteCodigo.nome}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Data Locação" />
+                                </f:facet>
+                                <h:outputText value="#{locacao.dataLocacao}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Data Devolução" />
+                                </f:facet>
+                                <h:outputText value="#{locacao.dataDevolucao}" />
+                            </p:column>
+                            
+                              <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Valor da locação" />
+                                </f:facet>
+                                <h:outputText value="R$ #{locacao.valor}" />
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </h:panelGrid>
+			
+			<center>
+            <p:panelGrid style="border:0px">			
+                <p:commandButton value="Efetuar devolução" action="#{locacaoBacking.devolverLocacao}" update="@form"/>
+                <p:commandButton value="Sair" action="#{locacaoBacking.sair}" update="@form"/>
+            </p:panelGrid>
+            </center>
+
+        </h:form>
+
+ 
+    </ui:define>
+</ui:composition>

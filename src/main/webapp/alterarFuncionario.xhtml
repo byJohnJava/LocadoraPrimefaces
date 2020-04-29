@@ -1,0 +1,121 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	
+<ui:define name="corpo">
+	<f:metadata>
+		<f:viewAction action="#{funcionarioBacking.init()}"/>
+	</f:metadata>
+<title>Alteração de funcionário</title>
+
+<h:form>
+         
+    <p:growl id="growl" sticky="true" showDetail="true"/>
+ 
+    <p:wizard flowListener="#{funcionarioBacking.onFlowProcess}">
+        <p:tab id="pessoal" title="Dados Pessoais">
+            <p:panel header="Dados Pessoais">
+                <h:panelGrid columns="2">
+                  		<p:outputLabel value="CPF:"/>
+						<p:inputMask mask="999.999.999-99" value="#{funcionarioBacking.funcionarioUpdate.cpf}" size="20" placeholder="000.000.000-00" disabled="true"/>
+						
+						<p:outputLabel value="RG:"/>
+						<p:inputMask mask="99.999.999-*" value="#{funcionarioBacking.funcionarioUpdate.rg}" size="20" placeholder="00.000.000-X" disabled="true"/>
+
+						<p:outputLabel value="Nome:"/>
+						<p:inputText value="#{funcionarioBacking.funcionarioUpdate.nome}" size="40" placeholder="Ex: Steve Jobs" disabled="true"/>
+						
+						<p:outputLabel value="Data de nascimento:"/>
+						<p:inputMask  mask="99/99/9999" value="#{funcionarioBacking.funcionarioUpdate.dataNascimento}" size="15" disabled="true"/>
+						
+						<p:outputLabel value="Idade: "/>
+						<p:inputNumber value="#{funcionarioBacking.funcionarioUpdate.idade}" decimalPlaces="0" size="5" disabled="true"/>
+						
+						<p:outputLabel value="Sexo:"/>
+						<p:selectOneRadio id="sexo" value="#{funcionarioBacking.funcionarioUpdate.sexo}" disabled="true">
+							<f:selectItem itemLabel="Masculino" itemValue="Masculino"/>
+							<f:selectItem itemLabel="Feminino" itemValue="Feminino"/>
+						</p:selectOneRadio>
+						
+                </h:panelGrid>
+            </p:panel>
+        </p:tab>
+ 
+        <p:tab id="endereco" title="Informações de Endereço">
+            <p:panel header="Informações de Endereço">
+                <h:panelGrid columns="2">
+                   	<p:outputLabel value="Endereço:"/>
+						<p:inputText size="40" value="#{funcionarioBacking.funcionarioUpdate.enderecoCodigo.logradouro}"/>
+					
+						<p:outputLabel value="Nº:"/>
+						<p:inputNumber size="6" value="#{funcionarioBacking.funcionarioUpdate.enderecoCodigo.numero}" decimalPlaces="0" placeholder="Ex: 10"/>
+						
+						<p:outputLabel value="Bairro:"/>
+						<p:inputText size="28" value="#{funcionarioBacking.funcionarioUpdate.enderecoCodigo.bairro}" placeholder="Ex: Jardim Mutinga"/>
+						
+						<p:outputLabel value="Complemento:"/>
+						<p:inputText size="28" value="#{funcionarioBacking.funcionarioUpdate.enderecoCodigo.complemento}" placeholder="Ex: Ao lado do mercado"/>
+						
+						<p:outputLabel value="CEP:"/>
+						<p:inputMask mask="99999-999" value="#{funcionarioBacking.funcionarioUpdate.enderecoCodigo.cep}" size="20" placeholder="Ex: 00000-000"/>
+						
+						<p:outputLabel value="Cidade:"/>
+						<p:selectOneMenu filter="true" size="60" value="#{funcionarioBacking.funcionarioUpdate.enderecoCodigo.cidadeCodigo.codigo}">
+							<f:selectItem itemValue="" itemLabel="- Selecione a Cidade -"/>
+							<f:selectItems value="#{funcionarioBacking.listaCidades}" var="cidade"
+									itemLabel="#{cidade.nome}" itemValue="#{cidade.codigo}"/>	 
+						</p:selectOneMenu>
+						
+						<p:outputLabel value="Estado:"/>
+						<p:selectOneMenu filter="true" size="35" value="#{funcionarioBacking.funcionarioUpdate.enderecoCodigo.cidadeCodigo.estadoCodigo.codigo}">
+							<f:selectItem itemValue="" itemLabel="- Selecione o Estado -"/>
+							<f:selectItems value="#{funcionarioBacking.listaEstados}" var="estado"
+									itemLabel="#{estado.nome} - #{estado.uf}" itemValue="#{estado.codigo}"/>	 	
+						</p:selectOneMenu>
+                </h:panelGrid>
+            </p:panel>
+        </p:tab>
+ 
+        <p:tab id="contato" title="Informações de Contato">
+            <p:panel header="Informações de Contato">
+                <h:panelGrid columns="2">
+                 	<p:outputLabel value="Telefone:"/>
+						<p:inputMask mask="(99) 9999-9999" value="#{funcionarioBacking.funcionarioUpdate.contatoCodigo.telefone}" size="20" placeholder="(00) 0000-0000"/>
+						
+						<p:outputLabel value="Celular:"/>
+						<p:inputMask mask="(99) 99999-9999" value="#{funcionarioBacking.funcionarioUpdate.contatoCodigo.celular}" size="20" placeholder="(00) 00000-0000"/>
+					
+						<p:outputLabel value="E-mail:"/>
+						<p:inputText value="#{funcionarioBacking.funcionarioUpdate.contatoCodigo.email}" size="50" placeholder="email@domain.com.br" />
+                </h:panelGrid>
+            </p:panel>
+        </p:tab>
+        
+        <p:tab id="acesso" title="Dados de acesso">
+            <p:panel header="Dados de acesso">
+                <h:panelGrid columns="2">
+           				<p:outputLabel value="Login:" />
+						<p:inputText value="#{funcionarioBacking.funcionarioUpdate.login}" size="30" disabled="true"/>
+						<h:outputText value="Senha: " />
+						<p:password id="feedback" value="#{funcionarioBacking.funcionarioUpdate.senha}" size="30"
+							feedback="true" />
+                </h:panelGrid>
+                 <center>
+ 				<p:commandButton value="Salvar" action="#{funcionarioBacking.salvar}"/>
+                </center>
+            </p:panel>
+        </p:tab>
+ 
+       
+                
+               
+        		
+    </p:wizard>
+            
+</h:form>
+
+
+	</ui:define>
+</ui:composition>

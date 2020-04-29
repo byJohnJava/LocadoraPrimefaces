@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+<ui:define name="corpo">
+	<f:metadata>
+		<f:viewAction action="#{locacaoBacking.init()}"/>
+	</f:metadata>
+		<title>Locação de filmes</title>
+		<h:form id="formLocacaoFilme" >
+			
+			<p:tabView>
+			
+				<p:tab title="Locação de filmes">
+					<p:separator />
+					 <p:growl id="growl" sticky="true" showDetail="true"/>
+			<h:panelGrid columns="6" cellpadding="10">
+				<h:outputLabel for="filme" value="Filme:" />
+        		<p:selectCheckboxMenu value="#{locacaoBacking.listaFilmesSelecionados}" label=" - Selecione o(s) filme(s) -" multiple="true"
+                              filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+            	<f:selectItems value="#{locacaoBacking.listaFilmes}" var="filme"
+            						itemLabel="#{filme.nome}" itemValue="#{filme.codigo}"/>
+            		 <p:ajax update="valorTotal" listener="#{locacaoBacking.calculaValorTotal}"/>
+       			</p:selectCheckboxMenu>
+       			
+       			<p:outputLabel for="cliente" value="Cliente:"/>
+				<p:selectOneMenu filter="true" id="cliente" size="30" value="#{locacaoBacking.cliente}" >
+						<f:selectItem itemValue="" itemLabel="- Selecione o cliente -"/>
+						<f:selectItems value="#{locacaoBacking.listaClientes}" var="cliente"
+							itemLabel="#{cliente.nome}" itemValue="#{cliente.codigo}"/>
+				</p:selectOneMenu>
+				
+				<p:outputLabel for="funcionario" value="Funcionário:"/>
+				<p:selectOneMenu filter="true" id="funcionario" size="30" value="#{locacaoBacking.funcionario}">
+						<f:selectItem itemValue="" itemLabel="- Selecione o funcionário -"/>
+						<f:selectItems value="#{locacaoBacking.listaFuncionarios}" var="funcionario"
+							itemLabel="#{funcionario.nome}" itemValue="#{funcionario.codigo}"/>
+				</p:selectOneMenu>
+       			
+			</h:panelGrid>
+			
+			<h:panelGrid columns="2" cellpadding="10">
+			
+				<p:outputLabel value="Forma de pagamento:" />
+        		<p:selectOneRadio id="console" value="#{locacaoBacking.formaPagamento}" unselectable="true">
+            		<f:selectItem itemLabel="Dinheiro" itemValue="1" />
+            		<f:selectItem itemLabel="Cartão de débito" itemValue="2" />
+            		<f:selectItem itemLabel="Cartão de crédito" itemValue="3" />
+       			</p:selectOneRadio>
+			
+			</h:panelGrid>
+			
+			<h:panelGrid columns="6" cellpadding="10">
+				<p:outputLabel value="Data de locação:"/>
+				<p:inputText value="#{locacaoBacking.pegarDataAtual()}" disabled="true"/>
+       		
+       			<p:outputLabel value="Data de devolução:"/>
+				<p:calendar id="mask" mask="true" pattern="dd/MM/yyyy" mindate="today" value="#{locacaoBacking.dataDevolucao}"/>
+				
+				<p:outputLabel value="Valor Total:" />
+				<p:inputNumber symbolPosition="p" symbol="R$" id="valorTotal" value="#{locacaoBacking.valor}" disabled="true"/> 
+				
+			</h:panelGrid>
+			
+			</p:tab>
+
+		</p:tabView>
+		
+			<center>
+			<p:panelGrid style="border:0px">
+				<p:commandButton value="Efetuar Locação" action="#{locacaoBacking.salvar}" update="@form"/>
+				<p:commandButton value="Cancelar" action="#{locacaoBacking.limparCamposLocacao()}" update="@form"/>
+				<p:commandButton value="Sair" action="#{locacaoBacking.sair}" update="@form"/>
+			</p:panelGrid>
+			</center>
+			
+
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
